@@ -1,0 +1,7 @@
+../../../srcs/mariadb
+../../../srcs/nginx
+../../../Makefile
+
+*.log
+*.tmp
+./swp
