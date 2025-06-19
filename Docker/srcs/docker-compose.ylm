@@ -1,0 +1,48 @@
+# Version de Docker Compose à utiliser
+version: "3.8"
+
+services:
+    mariadb:
+      build: /requirements/mariadb/Dockerfile
+      image: mariadb_img
+      env-file:
+        - .env
+      volumes:
+        - /chemin/hote:/chemin/conteneur # Mappage de volumes
+      networks:
+        - inception
+      restart:
+        - always
+
+    nginx:
+      build: /requirements/nginx/Dockerfile
+      image: nginx_img
+      ports:
+        - "443:443"
+      env-file:
+        - .env
+      volumes:
+        - /chemin/hote:/chemin/conteneur # Mappage de volumes
+      depends_on:
+        - service2 # Dépendances entre les services
+      networks:
+        - inception
+      restart:
+        - always
+
+    wordpress:
+      build: /requirements/wordpress/Dockerfile
+      image: wordpress_img
+      env-file:
+        - .env
+      volumes:
+        - /chemin/hote:/chemin/conteneur # Mappage de volumes
+      depends_on:
+        - mariadb
+      networks:
+        - inception
+      restart:
+        - always
+        
+networks:
+  inception
