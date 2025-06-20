@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.10
-
 FROM debian:bullseye
 
 #-----------------------INSTALL NGINX & OPENSSL
@@ -12,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN mkdir -p /etc/nginx/ssl \
     && openssl req -x509 -nodes \
     -out /etc/nginx/ssl/certificate.crt \
-    -keyout /etc/nginx/ssl/private_key.key
+    -keyout /etc/nginx/ssl/private_key.key \
     -subj "/C=FR/ST=IleDeFrance/L=Paris/O=42/CN=$(WP_DOMAIN_NAME)"
 
 #-----------------------COPY NGINX CONFIG

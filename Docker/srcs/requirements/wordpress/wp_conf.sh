@@ -41,7 +41,7 @@ wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" \
     --allow-root
 
 #-----------------------PHP-FPM CONFIGURATION
-# modificate line 36 of www.onf to listen = 9000
+# modificate line 36 of www.conf to listen = 9000
 sed -i '36 s@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf
 mkdir -p /run/php
 
