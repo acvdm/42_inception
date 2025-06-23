@@ -1,4 +1,4 @@
-#/!bin/bash
+#!/bin/bash
 
 set -e
 
@@ -11,26 +11,25 @@ mv wp-cli.phar /usr/bin/wp
 mkdir -p /var/www/wordpress
 cd /var/www/wordpress
 chmod -R 755 .
-chown -R www-data:www.data .
-
+chown -R www-data:www-data .
 
 #-----------------------INSTALL WORDPRESS
 wp core download --allow-root
 
 # configuration wp-config.php 
 wp core config \
-    --dbhost=mariadb:3306 \
-    --dbname= "$SQL_DATABASE" \
-    --dbuser= "$SQL_USER" \
-    --dbpass = "$SQL_PWD" \
+    --dbhost="mariadb:3306" \
+    --dbname="$SQL_DATABASE" \
+    --dbuser="$SQL_USER" \
+    --dbpass="$SQL_PWD" \
     --allow-root 
 
 # wordpress installation + configuration
 wp core install \
     --url="$WP_DOMAIN_NAME" \
-    --title= "$WP_TITLE" \
-    --admin_user= "$WP_ADMIN_NAME" \
-    --admin_password= "$WP_ADMIN_PWD" \
+    --title="$WP_TITLE" \
+    --admin_user="$WP_ADMIN_NAME" \
+    --admin_password="$WP_ADMIN_PWD" \
     --admin_email="$WP_ADMIN_EMAIL" \
     --allow-root
 

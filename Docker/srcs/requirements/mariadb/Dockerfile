@@ -3,6 +3,7 @@ FROM debian:bullseye
 #-----------------------INSTALL MARIADB
 RUN apt-get update && apt-get install -y --no-install-recommends \
     mariadb-server \
+    netcat \
     && rm -rf /var/lib/apt/lists/*
 
 #-----------------------COPY MDB CONFIG
