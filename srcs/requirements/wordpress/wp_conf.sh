@@ -1,20 +1,21 @@
 #!/bin/bash
 
-#-----------------------INSTALL WP-CLI
+#-----------------------INSTALL WORDPRESS 
 if [ ! -f /var/www/wordpress/wp-config.php ]; then
     echo "Installation de Wordpress..."
 
+    # install wp-cli
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     chmod +x wp-cli.phar
     mv wp-cli.phar /usr/bin/wp
 
-    #-----------------------PREPARATION WORDPRESS DIRECTORY
+    # prepare wordpress directory
     mkdir -p /var/www/wordpress
     cd /var/www/wordpress
     chmod -R 755 /var/www/wordpress
     chown -R www-data:www-data /var/www/wordpress
 
-    #-----------------------INSTALL WORDPRESS
+    # installer wordpress
     wp core download --allow-root
 
     # configuration wp-config.php 
@@ -41,11 +42,10 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
         --allow-root
     echo "Wordpress installe avec succes !"
 else
-    echo "Wordpress deja configure, damarrage..."
+    echo "Wordpress deja configure, demarrage..."
 fi
 
 #-----------------------PHP-FPM CONFIGURATION
-# modificate line 36 of www.conf to listen = 9000
 sed -i '36 s@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf
 mkdir -p /run/php
 
