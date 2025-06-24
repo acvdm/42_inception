@@ -1,5 +1,6 @@
 services:
     mariadb:
+      image: mariadb:user
       container_name: mariadb
       build: ./requirements/mariadb/
       env_file:
@@ -10,9 +11,10 @@ services:
         - "3306"
       networks:
         - inception
-      restart: always
+      #restart: always
 
     nginx:
+      image: nginx:user
       container_name: nginx
       build: ./requirements/nginx/
       ports:
@@ -21,11 +23,14 @@ services:
         - .env
       depends_on:
         - wordpress
+      volumes:
+        - wordpress:/var/www/wordpress
       networks:
         - inception
-      restart: always
+      #restart: always
 
     wordpress:
+      image: wordpress:user
       container_name: wordpress
       build: ./requirements/wordpress/
       env_file:
@@ -38,7 +43,7 @@ services:
         - mariadb
       networks:
         - inception
-      restart: always
+      #restart: always
         
 networks:
   inception:
@@ -46,6 +51,7 @@ networks:
 
 volumes:
   mariadb:
+    name: mariadb
     driver: local
     driver_opts:
       device: /home/anvander/data/mariadb
@@ -53,6 +59,7 @@ volumes:
       type: none
 
   wordpress:
+    name: wordpress
     driver: local
     driver_opts:
       device: /home/anvander/data/wordpress

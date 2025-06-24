@@ -10,8 +10,8 @@ mv wp-cli.phar /usr/bin/wp
 #-----------------------PREPARATION WORDPRESS DIRECTORY
 mkdir -p /var/www/wordpress
 cd /var/www/wordpress
-chmod -R 755 .
-chown -R www-data:www-data .
+chmod -R 755 /var/www/wordpress
+chown -R www-data:www-data /var/www/wordpress
 
 #-----------------------INSTALL WORDPRESS
 wp core download --allow-root
