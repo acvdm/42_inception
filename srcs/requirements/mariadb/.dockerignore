@@ -1,7 +1,0 @@
-../../../srcs/wordpress
-../../../srcs/nginx
-../../../Makefile
-
-*.log
-*.tmp
-./swp

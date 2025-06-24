@@ -1,7 +1,0 @@
-../../../srcs/mariadb
-../../../srcs/wordpress
-../../../Makefile
-
-*.log
-*.tmp
-./swp

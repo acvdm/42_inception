@@ -1,4 +1,7 @@
+version: "3.8"
+
 services:
+
     mariadb:
       image: mariadb:user
       container_name: mariadb
@@ -11,7 +14,13 @@ services:
         - "3306"
       networks:
         - inception
-      #restart: always
+      restart: always
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+        interval: 30s
+        timeout: 20s
+        retries: 5
+        start_period: 60s
 
     nginx:
       image: nginx:user
@@ -27,7 +36,7 @@ services:
         - wordpress:/var/www/wordpress
       networks:
         - inception
-      #restart: always
+      restart: always
 
     wordpress:
       image: wordpress:user
@@ -40,10 +49,11 @@ services:
       expose:
         - "9000"
       depends_on:
-        - mariadb
+        mariadb:
+          condition: service_healthy
       networks:
         - inception
-      #restart: always
+      restart: always
         
 networks:
   inception:
