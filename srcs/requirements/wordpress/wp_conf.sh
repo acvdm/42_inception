@@ -1,8 +1,17 @@
 #!/bin/bash
 
+#echo "Attente de MariaDB..."
+#while ! mysqladmin ping -h"$SQL_HOST" --silent; do
+#    sleep 1
+#done
+#echo "MariaDB est pret !"
+
 #-----------------------INSTALL WORDPRESS 
 if [ ! -f /var/www/wordpress/wp-config.php ]; then
-    echo "Installation de Wordpress..."
+
+    if [ ! -f /var/www/wordpress/wp-config-sample.php ]; then
+        echo "ERREUR: fichier wp-config-sample.php non trouve..."
+    fi
 
     # install wp-cli
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -15,16 +24,21 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
     chmod -R 755 /var/www/wordpress
     chown -R www-data:www-data /var/www/wordpress
 
+    cd /var/www/wordpress
+
     # installer wordpress
     wp core download --allow-root
+    cp wp-config-sample.php wp-config.php 
 
-    # configuration wp-config.php 
-    wp core config \
-        --dbhost="mariadb:3306" \
-        --dbname="$SQL_DATABASE" \
-        --dbuser="$SQL_USER" \
-        --dbpass="$SQL_PWD" \
-        --allow-root 
+    sed -i "s/database_name_here/$SQL_DATABASE/" wp-config.php
+    sed -i "s/username_here/$SQL_USER/" wp-config.php
+    sed -i "s/password_here/$SQL_PWD/" wp-config.php
+    sed -i "s/localhost/mariadb/" wp-config.php
+
+    if [ ! -f /var/www/wordpress/wp-config.php ]; then
+        echo "wp-config.php n'a pas ete cree..."
+        exit 1
+    fi
 
     # wordpress installation + configuration
     wp core install \
@@ -34,15 +48,14 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
         --admin_password="$WP_ADMIN_PWD" \
         --admin_email="$WP_ADMIN_EMAIL" \
         --allow-root
-
     # create a new user
     wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" \
-        --user-pass="$WP_USER_PWD" \
+        --user_pass="$WP_USER_PWD" \
         --role="$WP_USER_ROLE" \
         --allow-root
     echo "Wordpress installe avec succes !"
 else
-    echo "Wordpress deja configure, demarrage..."
+    echo "Wordpress est deja installe !"
 fi
 
 #-----------------------PHP-FPM CONFIGURATION
