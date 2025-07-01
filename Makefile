@@ -21,18 +21,14 @@ build:
 	docker compose -f ./srcs/docker-compose.yml build
 
 clean:
-	@containers=$$(docker ps -aq)
-	@docker stop $$containers || true
-	@docker rm $$containers || true
+	@docker stop $$(docker ps -aq) || true
+	@docker rm $$(docker ps -aq) || true
 
-	@images=$$(docker images -aq)
-	@docker rmi -f $$images || true
+	@docker rmi -f $$(docker images -aq) || true
 
-	@volume=$$(docker volume ls -q)
-	@docker volume rm $$volume || true
+	@docker volume rm $$(docker volume ls -q) || true
 
-	@network=$$(docker network ls -q)
-	@docker network rm $$network || true
+	@docker network rm $$(docker network ls -q) || true
 
 re: clean up
 

@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bullseye-slim
 
 #-----------------------INSTALL NECESSARY PACKAGES
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 #-----------------------COPY WP_CONF.SH
 COPY ./wp_conf.sh /
+
 RUN chmod +x wp_conf.sh
 
 EXPOSE 9000

@@ -6,13 +6,14 @@ if [ -z "$SQL_DATABASE" ] || [ -z "$SQL_USER" ] || [ -z "$SQL_PWD" ] || [ -z "$S
     exit 1
 fi
 
-#------------------------------------------------------
+#-----------------------KILL EXISTING PID
 pkill mysqld || true
 pkill mariadb || true
 sleep 2
 
 #-----------------------START  MARIADB
 echo "Demarrage de MariaDB en mode securise..."
+
 mysqld_safe --skip-grant-tables --skip-networking &
 MYSQL_PID=$!
 sleep 10
@@ -24,6 +25,7 @@ fi
 
 #-----------------------CONFIG MARIADB
 echo "Configuration de la base de donnees..."
+
 mysql -u root << EOF
 FLUSH PRIVILEGES;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '$SQL_ROOT_PWD';
@@ -43,6 +45,7 @@ echo "Configuration de la base de donnees reussie..."
 
 #-----------------------RESTART MARIADB 
 echo "Redemarrage MariaDB en mode normal"
+
 kill $MYSQL_PID
 sleep 5
 

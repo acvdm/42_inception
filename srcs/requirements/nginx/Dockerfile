@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bullseye-slim
 
 #-----------------------INSTALL NGINX & OPENSSL
 RUN apt-get update && apt-get install -y --no-install-recommends \
