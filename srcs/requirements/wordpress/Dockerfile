@@ -4,7 +4,6 @@ FROM debian:bullseye-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
-    php \
     php7.4-fpm \
     php-mysql \
     mariadb-client \
@@ -14,8 +13,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY ./wp_conf.sh /
 
 RUN chmod +x wp_conf.sh
-
-EXPOSE 9000
 
 #-----------------------LAUNCH THE CONFIGURATION FILE
 ENTRYPOINT ["./wp_conf.sh"]

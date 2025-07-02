@@ -9,8 +9,6 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
     chmod -R 755 /var/www/wordpress
     chown -R www-data:www-data /var/www/wordpress
 
-    cd /var/www/wordpress
-
     # install wp-cli
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     chmod +x wp-cli.phar
@@ -22,13 +20,13 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
 
     if [ ! -f /var/www/wordpress/wp-config-sample.php ]; then
         echo "ERREUR: fichier wp-config-sample.php non trouve..."
+    else
+        sed -i "s/database_name_here/$SQL_DATABASE/" wp-config.php
+        sed -i "s/username_here/$SQL_USER/" wp-config.php
+        sed -i "s/password_here/$SQL_PWD/" wp-config.php
+        sed -i "s/localhost/mariadb/" wp-config.php
     fi
-
-    sed -i "s/database_name_here/$SQL_DATABASE/" wp-config.php
-    sed -i "s/username_here/$SQL_USER/" wp-config.php
-    sed -i "s/password_here/$SQL_PWD/" wp-config.php
-    sed -i "s/localhost/mariadb/" wp-config.php
-
+    
     if [ ! -f /var/www/wordpress/wp-config.php ]; then
         echo "wp-config.php n'a pas ete cree..."
         exit 1
